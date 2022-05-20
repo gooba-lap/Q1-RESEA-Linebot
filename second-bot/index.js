@@ -63,14 +63,14 @@ const handleEvent = async (event) => {
             messageAll = [
                 // { type: "text", text: " ⚡️ Todo \n ⚡️ User \n ⚡️ Point \n ⚡️ Promotion \n ⚡️ ..."},
                 { type: "text", text: 
-                    " 🎃 all command " +
+                    " 🎃 All command " +
                     "\n cmd : ขอรายละเอียด " +
                     "\n cmd : Todo " +
                     "\n cmd : User " +
                     "\n cmd : Point " + 
                     "\n cmd : Promotion" +
                     "\n " +
-                    "\n 🎃 doing " +
+                    "\n 🎃 Doing " +
                     "\n 1 " +
                     "\n 2 "  
                 }
