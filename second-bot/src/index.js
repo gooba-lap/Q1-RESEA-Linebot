@@ -6,17 +6,23 @@ const dotenv = require("dotenv");
 const env = dotenv.config().parsed;
 const app = express();
 
+// mock data api
+var cors = require('cors')
+const importData = require("../src/mockdata/mockdata.json")
+app.use(cors())
+
 const lineConfig = {
     channelAccessToken: env.ACCESS_TOKEN,
     channelSecret: env.SECRET_TOKEN,
 };
+
 // create client
 const client = new line.Client(lineConfig);
 
 app.post("/webhook", line.middleware(lineConfig), async (req, res) => {
     try {
         const events = req.body.events;
-        console.log("event >>>>", events);
+        console.log("event 😵‍💫 ", events);
         return events.length > 0
             ? await events.map((item) => handleEvent(item))
             : res.status(200).send("OK");
@@ -24,6 +30,29 @@ app.post("/webhook", line.middleware(lineConfig), async (req, res) => {
         res.status(500).end();
     }
 });
+
+// xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx
+
+// GET method route
+app.get('/webhook', async (req, res) => {
+    res.send("hi")
+    // try {
+    //     const events = req.body.events;
+    //     console.log("event 😵‍💫 ", events);
+    //     return events.length > 0
+    //         ? await events.map((item) => handleEvent(item))
+    //         : res.status(200).send("OK");
+    // } catch (error) {
+    //     res.status(500).end();
+    // }
+})
+
+// xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx
+
+// mock data api
+app.get('/mockdata', (req, res) => {
+    res.send(importData);
+})
 
 // xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx
 
@@ -52,27 +81,53 @@ app.post("/webhook", line.middleware(lineConfig), async (req, res) => {
 //     }
 // };
 
-//
-
 const handleEvent = async (event) => {
     if (event.type !== 'message' || event.message.type !== 'text') {
         return null;
     }
+
     else if (event.type === 'message') {
         if (event.message.text === "ขอรายละเอียด") {
             messageAll = [
-                // { type: "text", text: " ⚡️ Todo \n ⚡️ User \n ⚡️ Point \n ⚡️ Promotion \n ⚡️ ..."},
-                { type: "text", text: 
-                    " 🎃 All command " +
-                    "\n cmd : ขอรายละเอียด " +
-                    "\n cmd : Todo " +
-                    "\n cmd : User " +
-                    "\n cmd : Point " + 
-                    "\n cmd : Promotion" +
-                    "\n " +
-                    "\n 🎃 Doing " +
-                    "\n 1 " +
-                    "\n 2 "  
+                { 
+                    "type": "text", 
+                    "text": "เลือกรายการที่คุณต้องการ 😆",
+                    "quickReply": { 
+                        "items": [    
+                        // {
+                        //     "type": "action", 
+                        //     "action": {
+                        //     "type": "location",
+                        //     "label": "Send location"
+                        //     }
+                        // },
+                        {
+                            "type": "action",
+                            "action": {
+                            "type": "message",
+                            "label": "🎃 ร้านอยู่ที่ไหน",
+                            "text": "ร้านอยู่ไหน"
+                            }
+                        },
+                        {
+                            "type": "action",
+                            "action": {
+                            "type": "message",
+                            "label": "🎃 ข้อมูลติดต่อ",
+                            "text": "ข้อมูลติดต่อ"
+                            }
+                        },
+                        {
+                            "type": "action",
+                            // "imageUrl": "https://example.com/tempura.png",
+                            "action": {
+                            "type": "message",
+                            "label": "ออก",
+                            "text": "."
+                            }
+                        }
+                        ]
+                    }
                 }
             ];
             console.log("messageAll -> ", messageAll);
@@ -162,12 +217,55 @@ const handleEvent = async (event) => {
                 console.log(error);
             }
         }
+
+        // ...
+        else if (event.message.text === "...") {
+            try {
+                messageAll = [
+                    {
+                        "type": "template",
+                        "altText": "This is a buttons template",
+                        "template": {
+                            "type": "buttons",
+                            "thumbnailImageUrl": "https://example.com/bot/images/image.jpg",
+                            "imageAspectRatio": "rectangle",
+                            "imageSize": "cover",
+                            "imageBackgroundColor": "#FFFFFF",
+                            "title": "Menu",
+                            "text": "Please select",
+                            "defaultAction": {
+                                "type": "uri",
+                                "label": "View detail",
+                                "uri": "http://example.com/page/123"
+                            },
+                            "actions": [
+                                {
+                                  "type": "postback",
+                                  "label": "Buy",
+                                  "data": "action=buy&itemid=123"
+                                },
+                                {
+                                  "type": "postback",
+                                  "label": "Add to cart",
+                                  "data": "action=add&itemid=123"
+                                },
+                                {
+                                  "type": "uri",
+                                  "label": "View detail",
+                                  "uri": "http://example.com/page/123"
+                                }
+                            ]
+                        }
+                      }
+                ];
+                console.log("messageAll -> ", messageAll);
+                return client.replyMessage(event.replyToken, messageAll);
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 };
-
-
-// xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx
-
 
 app.listen(4000, () => {
     console.log("listening on 4000");

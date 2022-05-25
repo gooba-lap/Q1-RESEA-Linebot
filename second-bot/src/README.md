@@ -1,4 +1,4 @@
-# Q1-RESEARCH-Linebot
+## Q1-RESEARCH-Linebot
 Researching . . . 🧪
 
 ## starter
@@ -6,7 +6,8 @@ EP.15 What’s New - สร้าง LINE Chatbot ด้วย Node.js !!
 - https://www.youtube.com/watch?v=PY5KlS-c03Y
 
 ## concept
-### show
+
+### 🟢 show
 <!-- xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx -->
 if
     req > สมาชิก 
@@ -21,6 +22,16 @@ if
     req > ขอเมนู
     res > เมนูทั้งหมด
 <!-- xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx -->
+
+### 🟡 chat
+<!-- xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx -->
+🟢 Response -> Send message by postman 
+
+🟡 Deploy -> Deploy backend database
+🟡 Response -> RealTime
+🟡 Collect -> save chat to db
+<!-- xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx -->
+
 ### edit
 <!-- xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx -->
 if
@@ -30,14 +41,3 @@ if
     req > ยกเลิกเมนู A
     res > ยกเลิกเมนู A เข้า DB
 <!-- xxxxxxxxxx xxxxxxxxxx xxxxxxxxxx -->
-
-
-
-## flow
-### 🟢 doing 
-if
-    req > type = todo 
-    res > todo
-if
-    req > type = user
-    res > user
